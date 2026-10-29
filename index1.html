@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="th" class="h-full bg-slate-50 scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curtain Master - เว็บไซต์ร้านผ้าม่านพรีเมียม บริการสั่งตัดและติดตั้งม่านทั้งหลังครบวงจร</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Kanit) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Kanit', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#fdfbf7',
+                            100: '#f7f2e8',
+                            200: '#eee3cf',
+                            500: '#c5a059',
+                            600: '#b08a45',
+                            700: '#8e6b2e',
+                            800: '#5c441c',
+                            900: '#2d1e0b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Kanit', sans-serif; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #c5a059; border-radius: 4px; }
+
+        @keyframes slideIn {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .toast-animate { animation: slideIn 0.3s ease-out forwards; }
+    </style>
+</head>
+<body class="h-full text-slate-800 flex flex-col antialiased bg-slate-50 selection:bg-brand-500 selection:text-white">
+
+    <!-- Toast Notification Box -->
+    <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
+    <!-- Website Header Navigation -->
+    <header class="bg-slate-950 text-white sticky top-0 z-40 border-b border-slate-800 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="#hero" class="flex items-center space-x-3 group">
+                    <div class="bg-gradient-to-br from-brand-500 to-brand-700 p-2.5 rounded-xl shadow-lg group-hover:scale-105 transition-transform">
+                        <i class="fa-solid fa-scroll text-2xl text-slate-950"></i>
+                    </div>
+                    <div>
+                        <span class="text-2xl font-extrabold tracking-tight text-white block leading-tight">CURTAIN <span class="text-brand-500">MASTER</span></span>
+                        <span class="text-[10px] text-slate-400 block tracking-widest uppercase font-light">Custom Curtains & Interior Services</span>
+                    </div>
+                </a>
+
+                <!-- Navigation Links -->
+                <nav class="hidden lg:flex space-x-6 text-sm font-medium">
+                    <a href="#hero" class="text-slate-300 hover:text-brand-400 transition-colors">หน้าแรก</a>
+                    <a href="#services" class="text-slate-300 hover:text-brand-400 transition-colors">บริการของเรา</a>
+                    <a href="#whole-house-calculator" class="text-brand-400 hover:text-brand-300 font-semibold flex items-center">
+                        <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> คำนวณราคาม่านทั้งหลัง
+                    </a>
+                    <a href="#catalog" class="text-slate-300 hover:text-brand-400 transition-colors">ประเภทผ้า & ราง</a>
+                    <a href="#reviews" class="text-slate-300 hover:text-brand-400 transition-colors">ผลงานติดตั้ง</a>
+                    <a href="#contact" class="text-slate-300 hover:text-brand-400 transition-colors">ติดต่อเรา</a>
+                </nav>
+
+                <!-- Cart Button & Quick Contact -->
+                <div class="flex items-center space-x-3">
+                    <button onclick="scrollToSection('whole-house-calculator'); switchTab('cart-summary');" class="relative bg-slate-900 hover:bg-slate-800 text-white p-3 rounded-xl transition-all border border-slate-800 shadow-md">
+                        <i class="fa-solid fa-cart-shopping text-lg text-brand-400"></i>
+                        <span id="cart-badge" class="absolute -top-2 -right-2 bg-brand-500 text-slate-950 text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center border-2 border-slate-950">0</span>
+                    </button>
+                    <a href="tel:0800000000" class="hidden sm:flex bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 text-slate-950 font-bold px-4 py-2.5 rounded-xl text-xs transition-all shadow-md items-center space-x-2">
+                        <i class="fa-solid fa-phone"></i>
+                        <span>080-000-0000</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Sub-bar -->
+        <div class="lg:hidden bg-slate-900 border-t border-slate-800 px-4 py-2 flex justify-around text-xs text-slate-300 font-medium overflow-x-auto">
+            <a href="#hero" class="py-1 px-2 whitespace-nowrap hover:text-brand-400">หน้าแรก</a>
+            <a href="#services" class="py-1 px-2 whitespace-nowrap hover:text-brand-400">บริการ</a>
+            <a href="#whole-house-calculator" class="py-1 px-2 whitespace-nowrap text-brand-400 font-bold">คำนวณราคาม่าน</a>
+            <a href="#catalog" class="py-1 px-2 whitespace-nowrap hover:text-brand-400">สินค้า</a>
+            <a href="#reviews" class="py-1 px-2 whitespace-nowrap hover:text-brand-400">ผลงาน</a>
+            <a href="#contact" class="py-1 px-2 whitespace-nowrap hover:text-brand-400">ติดต่อ</a>
+        </div>
+    </header>
+
+    <!-- MAIN WEBSITE CONTENT -->
+    <main class="flex-grow">
+
+        <!-- HERO SECTION -->
+        <section id="hero" class="relative bg-slate-950 text-white overflow-hidden py-20 lg:py-28 border-b border-slate-800">
+            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand-900/30 via-slate-950 to-slate-950 opacity-80 pointer-events-none"></div>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    
+                    <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                        <div class="inline-flex items-center space-x-2 bg-brand-500/10 border border-brand-500/30 text-brand-400 px-3.5 py-1.5 rounded-full text-xs font-semibold">
+                            <i class="fa-solid fa-award"></i>
+                            <span>ร้านผ้าม่านสั่งตัดพรีเมียม อันดับ 1 สำหรับบ้านเดี่ยวและคอนโด</span>
+                        </div>
+                        
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-white">
+                            เนรมิตผ้าม่านสวย <br class="hidden sm:block">
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-200 via-brand-500 to-amber-400">เข้ารูปเป๊ะทั้งหลัง</span> สมจริงด้วย AI
+                        </h1>
+                        
+                        <p class="text-slate-400 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                            บริการสั่งตัดผ้าม่านตามขนาดจริง จำลองภาพม่านลงบนห้องของคุณด้วย AI ก่อนเริ่มตัด พร้อมบริการเหมาติดตั้งทั้งหลัง มัดจำสินค้า <span class="text-brand-400 font-bold">60%</span> ก่อนเริ่มงานผลิต
+                        </p>
+
+                        <!-- CTA Buttons -->
+                        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                            <a href="#whole-house-calculator" class="w-full sm:w-auto bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 text-slate-950 font-extrabold px-8 py-4 rounded-xl shadow-xl hover:shadow-brand-500/20 transition-all text-sm flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-calculator text-base"></i>
+                                <span>คำนวณราคาม่านทั้งหลัง & Gen ภาพ AI</span>
+                            </a>
+                            <a href="#services" class="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-800 font-bold px-7 py-4 rounded-xl transition-all text-sm flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-truck-gear"></i>
+                                <span>บริการเรียกช่างวัดหน้างาน</span>
+                            </a>
+                        </div>
+
+                        <!-- Highlights Stats -->
+                        <div class="grid grid-cols-3 gap-4 pt-8 border-t border-slate-800 max-w-xl mx-auto lg:mx-0 text-center lg:text-left">
+                            <div>
+                                <span class="text-2xl font-extrabold text-brand-400 block">1,500+</span>
+                                <span class="text-xs text-slate-400">ส่งมอบบ้านทั่วกรุงเทพและปริมณฑล</span>
+                            </div>
+                            <div>
+                                <span class="text-2xl font-extrabold text-brand-400 block">100%</span>
+                                <span class="text-xs text-slate-400">ตัดเย็บตรงสเปก</span>
+                            </div>
+                            <div>
+                                <span class="text-2xl font-extrabold text-brand-400 block">1 ปี</span>
+                                <span class="text-xs text-slate-400">รับประกันงานติดตั้ง</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hero Visual Card -->
+                    <div class="lg:col-span-5">
+                        <div class="relative bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-2xl overflow-hidden group">
+                            <div class="aspect-4/3 rounded-2xl overflow-hidden relative">
+                                <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1000&q=80" alt="Curtain Master Hero" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+                                <div class="absolute bottom-4 left-4 right-4 bg-slate-950/80 backdrop-blur-md p-4 rounded-xl border border-slate-800">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <span class="text-xs font-bold text-brand-400 block">ตัวอย่างผลงานติดตั้ง</span>
+                                            <span class="text-sm font-semibold text-white">ม่านลอนทึบ+โปร่ง สไตล์มินิมอล</span>
+                                        </div>
+                                        <span class="bg-brand-500/20 text-brand-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-brand-500/30">สั่งทำทั้งหลัง</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- SERVICES SECTION -->
+        <section id="services" class="py-20 bg-slate-900 text-white border-b border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+                    <span class="text-xs font-bold text-brand-400 uppercase tracking-widest block">Our Comprehensive Services</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white">บริการผ้าม่านครบวงจร ตอบโจทย์ทุกความต้องการ</h2>
+                    <p class="text-slate-400 text-sm">ไม่ว่าคุณจะต้องการทำผ้าม่านใหม่ทั้งหลัง หรือต้องการเปลี่ยนม่านเก่า เรามีทีมช่างดูแลครบทุกขั้นตอน</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Service 1 -->
+                    <div class="bg-slate-950 border border-slate-800 rounded-2xl p-6 hover:border-brand-500/50 transition-all flex flex-col justify-between space-y-4">
+                        <div class="space-y-3">
+                            <div class="w-12 h-12 bg-brand-500/10 text-brand-400 rounded-xl flex items-center justify-center text-xl font-bold">
+                                <i class="fa-solid fa-house-circle-check"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-white">ติดตั้งเหมาทั้งหลัง (5-10 จุด)</h3>
+                            <p class="text-xs text-slate-400 leading-relaxed">สำหรับบ้านเดี่ยว ทาวน์โฮม สั่งครบ 5 จุดขึ้นไป ฟรีค่าบริการติดตั้งเหมา ประหยัดคุ้มค่าที่สุด</p>
+                        </div>
+                        <span class="text-xs font-bold text-brand-400 flex items-center">ฟรีค่าเหมาติดตั้งเมื่อสั่งครบ 5 จุด</span>
+                    </div>
+
+                    <!-- Service 2 -->
+                    <div class="bg-slate-950 border border-slate-800 rounded-2xl p-6 hover:border-brand-500/50 transition-all flex flex-col justify-between space-y-4">
+                        <div class="space-y-3">
+                            <div class="w-12 h-12 bg-brand-500/10 text-brand-400 rounded-xl flex items-center justify-center text-xl font-bold">
+                                <i class="fa-solid fa-tape"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-white">บริการช่างเข้าวัดพื้นที่หน้างาน</h3>
+                            <p class="text-xs text-slate-400 leading-relaxed">ช่างนำเล่มตัวอย่างผ้าจริงไปให้เลือกถึงบ้าน พร้อมวัดขนาดเป๊ะ 100% ค่าบริการ 500 บ. (นำมาหักเป็นส่วนลดวันติดได้)</p>
+                        </div>
+                        <span class="text-xs font-bold text-brand-400">นำค่าบริการมาหักลบเต็มจำนวน</span>
+                    </div>
+
+                    <!-- Service 3 -->
+                    <div class="bg-slate-950 border border-slate-800 rounded-2xl p-6 hover:border-brand-500/50 transition-all flex flex-col justify-between space-y-4">
+                        <div class="space-y-3">
+                            <div class="w-12 h-12 bg-brand-500/10 text-brand-400 rounded-xl flex items-center justify-center text-xl font-bold">
+                                <i class="fa-solid fa-arrows-rotate"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-white">โปรโมชั่นเปลี่ยนม่านเก่า</h3>
+                            <p class="text-xs text-slate-400 leading-relaxed">สำหรับบ้านที่มีม่านเดิม (จีบ, ลอนเทป) ประสงค์เปลี่ยนผ้าใหม่ รับส่วนลดโปรโมชั่นเทิร์นผ้าเก่าสูงสุด 15%</p>
+                        </div>
+                        <span class="text-xs font-bold text-brand-400">รับส่วนลดเพิ่มทันที 15%</span>
+                    </div>
+
+                    <!-- Service 4 -->
+                    <div class="bg-slate-950 border border-slate-800 rounded-2xl p-6 hover:border-brand-500/50 transition-all flex flex-col justify-between space-y-4">
+                        <div class="space-y-3">
+                            <div class="w-12 h-12 bg-brand-500/10 text-brand-400 rounded-xl flex items-center justify-center text-xl font-bold">
+                                <i class="fa-solid fa-box-open"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-white">ขายสินค้าแยกชิ้น / ติดตั้งเอง</h3>
+                            <p class="text-xs text-slate-400 leading-relaxed">สั่งตัดเฉพาะรางม่าน ผ้าเป็นเมตร หรืออุปกรณ์เสริม จัดส่งฟรีทั่วประเทศพร้อมคู่มือการติดตั้งง่ายๆ ด้วยตนเอง</p>
+                        </div>
+                        <span class="text-xs font-bold text-brand-400">จัดส่งฟรีทั่วไทย</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- WHOLE HOUSE CALCULATOR & AI PREVIEW INTERACTIVE WEB TOOL -->
+        <section id="whole-house-calculator" class="py-20 bg-slate-100 text-slate-900">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-3xl mx-auto mb-12 space-y-2">
+                    <span class="text-xs font-bold text-brand-700 uppercase tracking-widest block">Interactive Design Tool</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900">ระบบออกแบบ & คำนวณราคาม่านทั้งหลัง</h2>
+                    <p class="text-slate-600 text-sm">จัดหมวดหมู่แยกตามห้อง อัปโหลดรูปหน้าต่างจริง แล้วสร้างภาพจำลองด้วย AI ได้ทันที</p>
+                </div>
+
+                <!-- Web Tool Navigation Tabs -->
+                <div class="mb-8 bg-white p-3 rounded-2xl border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex items-center space-x-2 overflow-x-auto py-1 max-w-full" id="room-tabs-container">
+                        <!-- Dynamic Room Tabs Injected via JS -->
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="addNewRoom()" class="bg-brand-50 hover:bg-brand-100 text-brand-800 font-bold px-3.5 py-2 rounded-xl border border-brand-300 text-xs transition-all flex items-center whitespace-nowrap">
+                            <i class="fa-solid fa-plus mr-1.5"></i> เพิ่มห้องใหม่
+                        </button>
+                        <button onclick="copyCurrentRoomSettings()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-3.5 py-2 rounded-xl text-xs transition-all flex items-center whitespace-nowrap">
+                            <i class="fa-solid fa-copy mr-1.5 text-slate-500"></i> คัดลอกสเปก
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    
+                    <!-- Left Column: Room Controls -->
+                    <div class="lg:col-span-6 space-y-6">
+                        <div class="bg-white rounded-2xl p-6 shadow-md border border-slate-200">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-lg font-bold text-slate-900 flex items-center">
+                                    <i class="fa-solid fa-sliders text-brand-600 mr-2"></i> กำหนดสเปก: <span id="current-room-title" class="text-brand-700 ml-1">ห้องรับแขก</span>
+                                </h3>
+                                <button id="btn-delete-room" onclick="deleteCurrentRoom()" class="text-xs text-red-500 hover:text-red-700 flex items-center font-medium">
+                                    <i class="fa-solid fa-trash-can mr-1"></i> ลบห้องนี้
+                                </button>
+                            </div>
+
+                            <!-- Room Name -->
+                            <div class="mb-4">
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">ชื่อห้อง / ตำแหน่ง</label>
+                                <input type="text" id="room-name-input" onchange="updateRoomName(this.value)" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm font-semibold text-slate-800 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                            </div>
+
+                            <!-- Photo Upload -->
+                            <div class="mb-6">
+                                <label class="block text-sm font-semibold text-slate-700 mb-2">อัปโหลดภาพหน้าต่างห้องนี้ (สำหรับจำลองด้วย AI)</label>
+                                <div class="flex items-center space-x-3">
+                                    <input type="file" id="room-photo-input" accept="image/*" class="hidden" onchange="handlePhotoUpload(event)">
+                                    <button onclick="document.getElementById('room-photo-input').click()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-medium transition-all flex items-center">
+                                        <i class="fa-solid fa-upload mr-2 text-brand-600"></i> เลือกรูปถ่ายห้องนี้
+                                    </button>
+                                    <button onclick="resetDefaultPhoto()" class="text-xs text-slate-500 hover:text-slate-800 underline">
+                                        ใช้รูปตัวอย่าง
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Dimensions Inputs -->
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label class="block text-sm font-semibold text-slate-700 mb-1">ความกว้าง (ซม.) <span class="text-red-500">*</span></label>
+                                    <div class="relative">
+                                        <input type="number" id="curtain-width" value="250" min="50" max="1000" oninput="updateCurtainCalculation()" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 text-slate-800 font-semibold focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                                        <span class="absolute right-3 top-2.5 text-xs text-slate-400">cm</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-slate-700 mb-1">ความสูง (ซม.) <span class="text-red-500">*</span></label>
+                                    <div class="relative">
+                                        <input type="number" id="curtain-height" value="260" min="50" max="500" oninput="updateCurtainCalculation()" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 text-slate-800 font-semibold focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                                        <span class="absolute right-3 top-2.5 text-xs text-slate-400">cm</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Area Calc -->
+                            <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl mb-6 flex justify-between items-center text-xs text-slate-600">
+                                <span>พื้นที่ผ้าม่านห้องนี้:</span>
+                                <span class="font-bold text-slate-900"><span id="sqm-calc">6.50</span> ตร.ม. (<span id="sqy-calc">7.80</span> ตารางหลา)</span>
+                            </div>
+
+                            <!-- Curtain Style Selection -->
+                            <div class="mb-6">
+                                <label class="block text-sm font-semibold text-slate-700 mb-2">เลือกรูปแบบผ้าม่าน</label>
+                                <div class="grid grid-cols-3 gap-2.5" id="style-options"></div>
+                            </div>
+
+                            <!-- Fabric & Color -->
+                            <div class="mb-6">
+                                <label class="block text-sm font-semibold text-slate-700 mb-2">เลือกประเภทเนื้อผ้า</label>
+                                <select id="fabric-type" onchange="updateCurtainCalculation()" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 text-slate-800 font-medium mb-3 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                                    <option value="dimout" data-price="350">ผ้ากัน UV (Dimout 80-90%) - 350 บาท/ตร.หลา</option>
+                                    <option value="blackout" data-price="480">ผ้าทึบแสง 100% (Blackout) - 480 บาท/ตร.หลา</option>
+                                    <option value="sheer" data-price="280">ผ้าโปร่งแสง (Sheer Fabric) - 280 บาท/ตร.หลา</option>
+                                    <option value="linen" data-price="420">ผ้าลินินพรีเมียม (Linen Look) - 420 บาท/ตร.หลา</option>
+                                </select>
+
+                                <label class="block text-xs font-semibold text-slate-600 mb-2">เลือกโทนสีผ้า</label>
+                                <div class="flex flex-wrap gap-3" id="color-options"></div>
+                            </div>
+
+                            <!-- Track Selection -->
+                            <div class="mb-6">
+                                <label class="block text-sm font-semibold text-slate-700 mb-2">เลือกประเภทรางม่าน</label>
+                                <select id="rail-type" onchange="updateCurtainCalculation()" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 text-slate-800 font-medium focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                                    <option value="rail-m" data-price="180">ราง M อลูมิเนียมมาตรฐาน (180 บาท/เมตร)</option>
+                                    <option value="rail-show" data-price="290">รางโชว์หัวลายหลุยส์/โมเดิร์น (290 บาท/เมตร)</option>
+                                    <option value="rail-roller" data-price="220">รางลูกกลิ้งสไลด์ลื่น (220 บาท/เมตร)</option>
+                                    <option value="rail-motor" data-price="1800">รางมอเตอร์อัตโนมัติ + รีโมท (1,800 บาท/เมตร)</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Right Column: AI Live Preview Window -->
+                    <div class="lg:col-span-6 flex flex-col space-y-6">
+                        <div class="bg-slate-950 rounded-2xl p-5 shadow-2xl text-white flex-grow flex flex-col border border-slate-800">
+                            <div class="flex flex-wrap justify-between items-center mb-3 px-1 gap-2">
+                                <span class="text-xs font-bold text-brand-400 uppercase tracking-wider flex items-center">
+                                    <i class="fa-solid fa-wand-magic-sparkles text-brand-500 mr-2"></i> พรีวิวภาพจำลอง AI: <span id="preview-room-title" class="text-white ml-1">ห้องรับแขก</span>
+                                </span>
+                                <div class="flex items-center space-x-2">
+                                    <label class="text-xs text-slate-300 flex items-center space-x-1 cursor-pointer bg-slate-900 border border-slate-800 px-2.5 py-1 rounded-lg">
+                                        <input type="checkbox" id="toggle-sheer" checked onchange="updateCurtainCalculation()" class="rounded text-brand-500 focus:ring-0">
+                                        <span>ม่านโปร่งชั้นใน</span>
+                                    </label>
+                                    <label class="text-xs text-slate-300 flex items-center space-x-1 cursor-pointer bg-slate-900 border border-slate-800 px-2.5 py-1 rounded-lg">
+                                        <input type="checkbox" id="toggle-tieback" checked onchange="updateCurtainCalculation()" class="rounded text-brand-500 focus:ring-0">
+                                        <span>รวบม่านข้าง</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Interactive AI Preview Window -->
+                            <div class="relative w-full h-80 sm:h-[420px] rounded-xl overflow-hidden bg-slate-900 border border-slate-800 flex items-center justify-center shadow-inner">
+                                
+                                <!-- INITIAL LOGO STATE -->
+                                <div id="preview-logo-placeholder" class="flex flex-col items-center justify-center text-center p-6 space-y-3 z-10">
+                                    <div class="bg-gradient-to-br from-brand-500 to-brand-700 p-5 rounded-2xl shadow-xl ring-4 ring-slate-800/80">
+                                        <i class="fa-solid fa-scroll text-5xl text-slate-950"></i>
+                                    </div>
+                                    <h3 class="text-xl font-extrabold tracking-tight text-white mt-2">
+                                        CURTAIN <span class="text-brand-500">MASTER</span>
+                                    </h3>
+                                    <p class="text-xs text-slate-400 max-w-xs leading-relaxed">
+                                        อัปโหลดภาพห้องนี้ แล้วกดปุ่ม <span class="text-brand-400 font-semibold">"สร้างภาพจำลองด้วย AI"</span> เพื่อเนรมิตภาพม่านลงบนห้องจริง
+                                    </p>
+                                </div>
+
+                                <!-- GENERATED AI IMAGE -->
+                                <img id="preview-bg-img" class="hidden absolute inset-0 w-full h-full object-cover z-20 transition-all duration-500" alt="Room Preview">
+
+                                <!-- LOADING OVERLAY -->
+                                <div id="ai-loading-overlay" class="hidden absolute inset-0 bg-slate-950/90 backdrop-blur-sm z-30 flex flex-col items-center justify-center space-y-3 p-4 text-center">
+                                    <div class="w-12 h-12 border-4 border-brand-500/30 border-t-brand-500 rounded-full animate-spin"></div>
+                                    <span class="text-sm font-semibold text-white">กำลังสร้างภาพจำลองผ้าม่านด้วย AI...</span>
+                                    <span class="text-xs text-slate-400">ประมวลผลทรงม่าน สีผ้า และทิศทางแสงเงา</span>
+                                </div>
+
+                            </div>
+
+                            <!-- Action Button -->
+                            <div class="mt-3">
+                                <button id="btn-generate-ai" onclick="generateAiCurtainPreview()" class="w-full bg-slate-900 hover:bg-slate-800 text-brand-400 border border-brand-500/40 font-bold py-3 px-4 rounded-xl shadow transition-all flex items-center justify-center space-x-2 text-sm">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                    <span>สร้างภาพจำลองด้วย AI สำหรับห้องนี้</span>
+                                </button>
+                            </div>
+
+                            <!-- Whole House Price Box -->
+                            <div class="mt-4 bg-slate-900 rounded-xl p-4 border border-slate-800">
+                                <div class="flex justify-between items-baseline mb-2">
+                                    <span class="text-xs text-slate-400">ราคาประเมินม่านห้องนี้:</span>
+                                    <span id="calculated-price" class="text-xl font-bold text-brand-400">0 บาท</span>
+                                </div>
+                                
+                                <div class="border-t border-slate-800 pt-3 mt-3 flex justify-between items-center">
+                                    <div>
+                                        <span class="text-xs text-slate-400 block">ราคารวมผ้าม่านทั้งหลัง (<span id="total-rooms-count">1</span> ห้อง):</span>
+                                        <span id="whole-house-total-price" class="text-3xl font-extrabold text-brand-500">0 บาท</span>
+                                    </div>
+                                    <button onclick="addAllRoomsToCart()" class="bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 text-slate-950 font-extrabold py-3 px-5 rounded-xl shadow-lg transition-all flex items-center space-x-2 text-sm">
+                                        <i class="fa-solid fa-cart-plus text-base"></i>
+                                        <span>บรรจุทั้งหลังลงตะกร้า</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- CATALOG SHOWCASE SECTION -->
+        <section id="catalog" class="py-20 bg-slate-900 text-white border-b border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+                    <span class="text-xs font-bold text-brand-400 uppercase tracking-widest block">Premium Materials</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white">คัดสรรเฉพาะเนื้อผ้าและอุปกรณ์มาตรฐานยุโรป</h2>
+                    <p class="text-slate-400 text-sm">ผ้าทนทาน ไม่สะสมฝุ่น กัน UV สูงสุด 100% พร้อมรางอลูมิเนียมเกรดหนาพิเศษ</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="bg-slate-950 rounded-2xl p-5 border border-slate-800 space-y-3">
+                        <div class="h-40 rounded-xl bg-slate-800 overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=500&q=80" class="w-full h-full object-cover">
+                            <span class="absolute top-2 right-2 bg-brand-500 text-slate-950 text-[10px] font-bold px-2 py-0.5 rounded">ยอดนิยม</span>
+                        </div>
+                        <h4 class="font-bold text-white text-base">ผ้า Dimout (กัน UV 80-90%)</h4>
+                        <p class="text-xs text-slate-400">ทอแน่นพิเศษ นุ่มลื่น กันความร้อนและแสงแดดได้ดีเยี่ยม เหมาะสำหรับห้องรับแขก</p>
+                    </div>
+
+                    <div class="bg-slate-950 rounded-2xl p-5 border border-slate-800 space-y-3">
+                        <div class="h-40 rounded-xl bg-slate-800 overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=500&q=80" class="w-full h-full object-cover">
+                        </div>
+                        <h4 class="font-bold text-white text-base">ผ้า Blackout (ทึบแสง 100%)</h4>
+                        <p class="text-xs text-slate-400">บล็อกแสงแดดสนิท 100% ช่วยให้ห้องเย็นและมืดสนิท เหมาะสำหรับห้องนอนใหญ่</p>
+                    </div>
+
+                    <div class="bg-slate-950 rounded-2xl p-5 border border-slate-800 space-y-3">
+                        <div class="h-40 rounded-xl bg-slate-800 overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1615873968403-89e068629265?auto=format&fit=crop&w=500&q=80" class="w-full h-full object-cover">
+                        </div>
+                        <h4 class="font-bold text-white text-base">ผ้าโปร่ง (Sheer Fabric)</h4>
+                        <p class="text-xs text-slate-400">กรองแสงให้นุ่มนวล เพิ่มพริ้วไหวและความหรูหราสไตล์รีสอร์ทให้บ้านของคุณ</p>
+                    </div>
+
+                    <div class="bg-slate-950 rounded-2xl p-5 border border-slate-800 space-y-3">
+                        <div class="h-40 rounded-xl bg-slate-800 overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=500&q=80" class="w-full h-full object-cover">
+                        </div>
+                        <h4 class="font-bold text-white text-base">รางมอเตอร์อัตโนมัติ</h4>
+                        <p class="text-xs text-slate-400">เปิด-ปิดเงียบ ควบคุมผ่านรีโมทหรือแอปพลิเคชันมือถือ เพิ่มความสะดวกระดับ Smart Home</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- REVIEWS & GALLERY SECTION -->
+        <section id="reviews" class="py-20 bg-slate-950 text-white border-b border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+                    <span class="text-xs font-bold text-brand-400 uppercase tracking-widest block">Customer Reviews</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white">ผลงานการติดตั้งจริงจากลูกค้าที่ไว้วางใจ</h2>
+                    <p class="text-slate-400 text-sm">การันตีความพึงพอใจด้วยภาพผลงานบ้านเดี่ยว ทาวน์โฮม และคอนโดมิเนียมหรู</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
+                        <div class="flex text-amber-400 space-x-1 text-sm">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed font-light">"ประทับใจระบบจำลองภาพ AI มากค่ะ ลองเปลี่ยนสีผ้าม่านจนพอใจ ช่างเข้าวัดหน้างานตรงเวลา ติดตั้งเรียบร้อยมาก งานทั้งหลังเสร็จไวทันเข้าอยู่เลยค่ะ"</p>
+                        <div class="flex items-center space-x-3 pt-2 border-t border-slate-800">
+                            <div class="w-10 h-10 bg-brand-500/20 text-brand-400 rounded-full flex items-center justify-center font-bold text-sm">คุณนภา</div>
+                            <div>
+                                <span class="text-xs font-bold text-white block">คุณนภาภรณ์ (หมู่บ้านเศรษฐสิริ)</span>
+                                <span class="text-[10px] text-slate-400 block">สั่งตัดผ้าม่านทึบ+โปร่ง ทั้งหลัง 8 จุด</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
+                        <div class="flex text-amber-400 space-x-1 text-sm">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed font-light">"เลือกใช้บริการเปลี่ยนม่านเก่า ได้ส่วนลดโปรโมชั่นเพิ่ม ผ้าทึบแสง 100% กันความร้อนได้ดีมาก ห้องนอนเย็นขึ้นเยอะครับ แนะนำเลยครับร้านนี้"</p>
+                        <div class="flex items-center space-x-3 pt-2 border-t border-slate-800">
+                            <div class="w-10 h-10 bg-brand-500/20 text-brand-400 rounded-full flex items-center justify-center font-bold text-sm">คุณธนกฤต</div>
+                            <div>
+                                <span class="text-xs font-bold text-white block">คุณธนกฤต (คอนโด Life สาทร)</span>
+                                <span class="text-[10px] text-slate-400 block">เปลี่ยนม่านเดิมเป็นม่านลอน Blackout</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-4">
+                        <div class="flex text-amber-400 space-x-1 text-sm">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed font-light">"ทีมงานให้คำแนะนำดี มัดจำ 60% งานผลิตเสร็จตามกำหนด ช่างเก็บงานเรียบร้อยไม่มีรอยเปื้อนผนังเลย สวยงามประทับใจมากครับ"</p>
+                        <div class="flex items-center space-x-3 pt-2 border-t border-slate-800">
+                            <div class="w-10 h-10 bg-brand-500/20 text-brand-400 rounded-full flex items-center justify-center font-bold text-sm">คุณอนันต์</div>
+                            <div>
+                                <span class="text-xs font-bold text-white block">คุณอนันต์ (บ้านเดี่ยวบางนา)</span>
+                                <span class="text-[10px] text-slate-400 block">ม่านลอนมอเตอร์ + ม่านพับ ทั้งหลัง</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER & CONTACT SECTION -->
+        <footer id="contact" class="bg-slate-950 text-white pt-16 pb-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 pb-12 border-b border-slate-800">
+                    
+                    <div class="md:col-span-5 space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="bg-brand-500 p-2 rounded-xl">
+                                <i class="fa-solid fa-scroll text-xl text-slate-950"></i>
+                            </div>
+                            <span class="text-2xl font-bold tracking-tight text-white">CURTAIN <span class="text-brand-500">MASTER</span></span>
+                        </div>
+                        <p class="text-slate-400 text-xs leading-relaxed max-w-sm">
+                            ร้านขายผ้าม่านและบริการติดตั้งครบวงจร ให้บริการสั่งตัดผ้าม่านรายห้อง ทั้งหลัง บริการช่างเข้าวัดพื้นที่หน้างานพร้อมเล่มตัวอย่างผ้า
+                        </p>
+                        <div class="text-xs text-slate-400 space-y-1">
+                            <p><i class="fa-solid fa-location-dot text-brand-400 mr-2"></i> 123/45 ถนนสุขุมวิท กรุงเทพมหานคร 10110</p>
+                            <p><i class="fa-solid fa-phone text-brand-400 mr-2"></i> 080-000-0000 / 02-123-4567</p>
+                            <p><i class="fa-solid fa-envelope text-brand-400 mr-2"></i> contact@curtainmaster.com</p>
+                        </div>
+                    </div>
+
+                    <div class="md:col-span-3 space-y-3">
+                        <h4 class="text-sm font-bold text-white uppercase tracking-wider">บริการของเรา</h4>
+                        <ul class="text-xs text-slate-400 space-y-2">
+                            <li><a href="#whole-house-calculator" class="hover:text-brand-400 transition-colors">สั่งตัดผ้าม่านทั้งหลัง</a></li>
+                            <li><a href="#services" class="hover:text-brand-400 transition-colors">บริการเหมาติดตั้ง 5-10 จุด</a></li>
+                            <li><a href="#services" class="hover:text-brand-400 transition-colors">บริการเรียกช่างวัดหน้างาน</a></li>
+                            <li><a href="#catalog" class="hover:text-brand-400 transition-colors">โปรโมชั่นเปลี่ยนม่านเก่า</a></li>
+                            <li><a href="#catalog" class="hover:text-brand-400 transition-colors">สั่งตัดรางม่าน & ม้วนผ้าขายแยก</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="md:col-span-4 space-y-3">
+                        <h4 class="text-sm font-bold text-white uppercase tracking-wider">ติดต่อรับประเมินราคาด่วน</h4>
+                        <p class="text-xs text-slate-400">แอดไลน์ส่งแบบแปลนบ้านหรือขนาดหน้าต่าง รับใบเสนอราคาภายใน 15 นาที</p>
+                        <div class="flex items-center space-x-3 pt-2">
+                            <a href="#" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2.5 rounded-xl text-xs flex items-center space-x-2 transition-all shadow-md">
+                                <i class="fa-brands fa-line text-lg"></i>
+                                <span>@curtainmaster</span>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="pt-8 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500">
+                    <p>© 2026 Curtain Master Official Website. All rights reserved.</p>
+                    <p class="mt-2 sm:mt-0">เงื่อนไขการให้บริการ: มัดจำสินค้าสั่งผลิต 60% ก่อนเริ่มงานตัดเย็บ</p>
+                </div>
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- Modal Order Confirmation Receipt -->
+    <div id="order-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-2 text-2xl">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900">ใบเสนอราคา / สรุปสั่งซื้อผ้าม่านทั้งหลัง</h3>
+                <p class="text-xs text-slate-500">กรุณาตรวจสอบรายการก่อนโอนชำระเงินมัดจำ 60%</p>
+            </div>
+
+            <div id="receipt-content" class="bg-slate-50 p-4 rounded-xl text-xs space-y-3 mb-6 border border-slate-200"></div>
+
+            <div class="space-y-3">
+                <button onclick="showToast('บันทึกคำสั่งซื้อผ้าม่านทั้งหลังเรียบร้อย! เจ้าหน้าที่จะติดต่อกลับยืนยันคิวติดตั้งภายใน 15 นาที', 'success'); closeModal();" class="w-full bg-brand-500 hover:bg-brand-600 text-slate-950 font-bold py-3 rounded-xl shadow transition-all">
+                    ยืนยันการแจ้งชำระมัดจำ 60%
+                </button>
+                <button onclick="closeModal()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-2.5 rounded-xl text-xs">
+                    กลับไปแก้ไขรายการ
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        const state = {
+            cart: [],
+            rooms: [
+                {
+                    id: 1,
+                    name: 'ห้องรับแขก',
+                    width: 250,
+                    height: 260,
+                    style: 'ripple',
+                    fabricType: 'dimout',
+                    fabricPrice: 350,
+                    colorHex: '#64748b',
+                    colorName: 'สีเทาโมเดิร์น',
+                    railType: 'rail-m',
+                    railPrice: 180,
+                    hasSheer: true,
+                    isTiedBack: true,
+                    roomImageBase64: null,
+                    calculatedPrice: 0
+                }
+            ],
+            activeRoomIndex: 0,
+            selectedService: 'fit-bundle',
+            serviceCost: 1500,
+            discountAmount: 0,
+            paymentMethod: 'qr'
+        };
+
+        const curtainStyles = [
+            { id: 'ripple', name: 'ม่านลอน', factor: 2.7, icon: 'fa-wave-square' },
+            { id: 'pleat', name: 'ม่านจีบ', factor: 2.5, icon: 'fa-align-justify' },
+            { id: 'fold', name: 'ม่านพับ', factor: 1.5, icon: 'fa-bars' },
+            { id: 'eyelet', name: 'ม่านตาไก่', factor: 2.2, icon: 'fa-ellipsis-h' },
+            { id: 'roller', name: 'ม่านม้วน', factor: 1.2, icon: 'fa-scroll' }
+        ];
+
+        const colorPalette = [
+            { name: 'สีเทาโมเดิร์น', hex: '#64748b' },
+            { name: 'สีเบจคลาสสิก', hex: '#d4b996' },
+            { name: 'สีครีมมินิมอล', hex: '#f3e8d3' },
+            { name: 'สีน้ำเงินพรีเมียม', hex: '#1e3a8a' },
+            { name: 'สีน้ำตาลโฮมมี่', hex: '#78350f' },
+            { name: 'สีขาวโปร่ง', hex: '#f8fafc' }
+        ];
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const bgClass = type === 'error' ? 'bg-red-600' : type === 'success' ? 'bg-emerald-600' : 'bg-slate-900';
+            toast.className = `${bgClass} text-white text-xs px-4 py-3 rounded-xl shadow-xl flex items-center space-x-2 toast-animate pointer-events-auto border border-slate-700`;
+            toast.innerHTML = `<i class="fa-solid ${type === 'error' ? 'fa-circle-exclamation text-red-300' : 'fa-circle-check text-emerald-300'} text-base"></i> <span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => { toast.remove(); }, 3500);
+        }
+
+        window.onload = function() {
+            renderStyleOptions();
+            renderColorOptions();
+            renderRoomTabs();
+            syncActiveRoomUI();
+            updateCartBadge();
+        };
+
+        function scrollToSection(id) {
+            document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function renderRoomTabs() {
+            const container = document.getElementById('room-tabs-container');
+            container.innerHTML = state.rooms.map((room, idx) => `
+                <button type="button" onclick="switchActiveRoom(${idx})" 
+                    class="px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 whitespace-nowrap ${idx === state.activeRoomIndex ? 'bg-slate-950 text-brand-400 shadow-md ring-1 ring-slate-800' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}">
+                    <i class="fa-solid fa-door-open ${idx === state.activeRoomIndex ? 'text-brand-500' : 'text-slate-400'}"></i>
+                    <span>${room.name}</span>
+                </button>
+            `+
+												
+												  
