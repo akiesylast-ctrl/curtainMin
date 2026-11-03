@@ -1,0 +1,398 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YOUR BRAND | Interior Design & Decoration</title>
+<meta name="description" content="บริการผ้าม่านและตกแต่งภายในครบวงจร ออกแบบพื้นที่ให้สวยงามและตอบโจทย์ทุกไลฟ์สไตล์">
+<style>
+:root {
+  --cream:#F5F2EC;
+  --beige:#DCD2C4;
+  --taupe:#A99B89;
+  --dark:#393832;
+  --white:#fff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:Arial,"Noto Sans Thai",sans-serif;
+  color:var(--dark);
+  background:var(--white);
+  line-height:1.7;
+}
+a{text-decoration:none;color:inherit}
+button{font:inherit;cursor:pointer}
+.container{width:min(1160px,90%);margin:auto}
+header{
+  position:sticky;top:0;z-index:10;
+  background:rgba(245,242,236,.96);
+  border-bottom:1px solid #e7e0d6;
+}
+.nav{
+  min-height:82px;display:flex;
+  align-items:center;justify-content:space-between;
+  gap:20px;
+}
+.logo{font-size:24px;letter-spacing:3px;font-weight:500}
+.logo small{display:block;font-size:9px;letter-spacing:2px}
+nav{display:flex;align-items:center;gap:23px}
+nav a{font-size:12px;letter-spacing:.5px}
+nav a:hover{color:var(--taupe)}
+.lang{border:0;background:transparent;font-weight:bold}
+.btn{
+  display:inline-block;padding:12px 23px;
+  background:var(--dark);color:white;
+  font-size:12px;letter-spacing:1px;
+  border:1px solid var(--dark);
+}
+.btn.light{background:transparent;color:var(--dark)}
+.menu-btn{display:none;background:none;border:0;font-size:25px}
+section{padding:90px 0}
+.hero{
+  min-height:620px;display:flex;align-items:center;
+  background:
+  linear-gradient(90deg,rgba(35,32,27,.56),rgba(35,32,27,.08)),
+  url('assets/images/hero.jpg') center/cover;
+  color:white;
+}
+.hero-content{max-width:650px}
+.eyebrow{font-size:11px;letter-spacing:3px;margin-bottom:20px}
+h1{font-size:clamp(38px,6vw,68px);line-height:1.13;font-weight:400;margin-bottom:20px}
+.hero p{max-width:520px;margin-bottom:28px}
+.hero .btn{background:white;color:var(--dark);border-color:white}
+.section-title{text-align:center;margin-bottom:45px}
+.section-title span{font-size:11px;letter-spacing:3px;color:var(--taupe)}
+h2{font-size:34px;font-weight:400;margin:8px 0}
+.section-title p{color:#777;max-width:600px;margin:auto;font-size:14px}
+.about-grid,.contact-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:55px;align-items:center;
+}
+.photo{
+  width:100%;height:410px;object-fit:cover;
+  background:var(--cream);
+}
+.about-text p{color:#777;margin:15px 0 25px;font-size:14px}
+.services,.products,.projects{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:25px;
+}
+.card img{
+  width:100%;height:245px;object-fit:cover;
+  background:var(--cream);
+}
+.card h3{font-size:17px;font-weight:500;margin:13px 0 4px}
+.card p{font-size:13px;color:#777}
+.card a{font-size:11px;letter-spacing:1px;display:inline-block;margin-top:12px}
+.bg{background:var(--cream)}
+.features{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:25px;text-align:center;
+}
+.feature{padding:20px 10px}
+.feature .icon{font-size:30px;color:var(--taupe)}
+.feature h3{font-size:15px;margin:12px 0}
+.feature p{font-size:12px;color:#777}
+.process{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:25px;
+}
+.step{border-top:1px solid var(--beige);padding:20px 0}
+.step span{color:var(--taupe);font-size:12px}
+.step h3{font-size:16px;font-weight:500;margin:7px 0}
+.step p{font-size:13px;color:#777}
+.contact-banner{
+  background:var(--dark);color:white;
+  text-align:center;padding:75px 20px;
+}
+.contact-banner h2{font-size:clamp(25px,4vw,42px)}
+.contact-banner p{color:#d4cec4;margin:15px 0 25px}
+.contact-banner .btn{background:white;color:var(--dark)}
+form{display:grid;gap:13px}
+input,select,textarea{
+  width:100%;padding:13px;border:1px solid #ddd;
+  background:white;font:inherit;font-size:13px;
+}
+textarea{min-height:110px}
+form button{justify-self:start}
+footer{background:var(--dark);color:white;padding:55px 0 20px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px}
+footer p,footer a{font-size:12px;color:#ccc}
+footer h3{font-size:14px;margin-bottom:15px}
+footer a{display:block;margin:8px 0}
+.copyright{border-top:1px solid #555;margin-top:35px;padding-top:18px;text-align:center;font-size:11px;color:#aaa}
+@media(max-width:900px){
+ nav{display:none;position:absolute;top:82px;left:0;width:100%;
+ background:var(--cream);padding:25px;flex-direction:column}
+ nav.open{display:flex}
+ .menu-btn{display:block}
+ .services,.products,.projects{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+ section{padding:65px 0}
+ .hero{min-height:540px}
+ .about-grid,.contact-grid{grid-template-columns:1fr;gap:25px}
+ .services,.products,.projects{grid-template-columns:1fr}
+ .features{grid-template-columns:repeat(2,1fr)}
+ .process{grid-template-columns:1fr}
+ .footer-grid{grid-template-columns:1fr}
+ h2{font-size:28px}
+}
+</style>
+</head>
+<body>
+
+<header>
+ <div class="container nav">
+  <a href="#home" class="logo">
+   YOUR BRAND
+   <small>INTERIOR & DECORATION</small>
+  </a>
+  <nav id="nav">
+   <a href="#home" data-th="หน้าแรก" data-en="HOME">หน้าแรก</a>
+   <a href="#about" data-th="เกี่ยวกับเรา" data-en="ABOUT">เกี่ยวกับเรา</a>
+   <a href="#services" data-th="บริการ" data-en="SERVICES">บริการ</a>
+   <a href="#products" data-th="สินค้า" data-en="PRODUCTS">สินค้า</a>
+   <a href="#projects" data-th="ผลงาน" data-en="PROJECTS">ผลงาน</a>
+   <a href="#contact" data-th="ติดต่อ" data-en="CONTACT">ติดต่อ</a>
+  </nav>
+  <div>
+   <button class="lang" id="language">EN</button>
+   <button class="menu-btn" id="menu">☰</button>
+  </div>
+ </div>
+</header>
+
+<main>
+<section class="hero" id="home">
+ <div class="container hero-content">
+  <div class="eyebrow">INTERIOR DESIGN & DECORATION</div>
+  <h1 data-th="สร้างสรรค์พื้นที่<br>ในแบบที่เป็นคุณ"
+      data-en="CREATE YOUR<br>PERFECT SPACE.">
+      สร้างสรรค์พื้นที่<br>ในแบบที่เป็นคุณ
+  </h1>
+  <p data-th="บริการผ้าม่านและตกแต่งภายในครบวงจร ใส่ใจทุกองค์ประกอบเพื่อสร้างพื้นที่ที่สวยงามและตอบโจทย์ทุกไลฟ์สไตล์"
+     data-en="Complete curtain and interior decoration solutions, thoughtfully designed around your lifestyle.">
+     บริการผ้าม่านและตกแต่งภายในครบวงจร ใส่ใจทุกองค์ประกอบเพื่อสร้างพื้นที่ที่สวยงามและตอบโจทย์ทุกไลฟ์สไตล์
+  </p>
+  <a href="#services" class="btn" data-th="ค้นพบบริการของเรา" data-en="EXPLORE SERVICES">ค้นพบบริการของเรา</a>
+ </div>
+</section>
+
+<section id="about">
+ <div class="container about-grid">
+  <img class="photo" src="assets/images/about.jpg" alt="Interior design">
+  <div class="about-text">
+   <div class="eyebrow">ABOUT OUR BRAND</div>
+   <h2 data-th="พื้นที่ที่สะท้อนตัวตนของคุณ"
+       data-en="A SPACE THAT REFLECTS YOU.">พื้นที่ที่สะท้อนตัวตนของคุณ</h2>
+   <p data-th="เราเชื่อว่าทุกพื้นที่มีเอกลักษณ์เฉพาะตัว เราใส่ใจการออกแบบที่ผสมผสานความสวยงาม ความสะดวกสบาย และฟังก์ชันการใช้งาน เพื่อสร้างพื้นที่ที่เหมาะกับการใช้ชีวิตของคุณ"
+      data-en="We believe every space has its own character. We combine beauty, comfort and functionality to create spaces that reflect your lifestyle.">
+      เราเชื่อว่าทุกพื้นที่มีเอกลักษณ์เฉพาะตัว เราใส่ใจการออกแบบที่ผสมผสานความสวยงาม ความสะดวกสบาย และฟังก์ชันการใช้งาน เพื่อสร้างพื้นที่ที่เหมาะกับการใช้ชีวิตของคุณ
+   </p>
+   <a href="#contact" class="btn light" data-th="รู้จักเรามากขึ้น" data-en="LEARN MORE">รู้จักเรามากขึ้น</a>
+  </div>
+ </div>
+</section>
+
+<section class="bg" id="services">
+ <div class="container">
+  <div class="section-title">
+   <span>WHAT WE DO</span>
+   <h2 data-th="บริการของเรา" data-en="OUR SERVICES">บริการของเรา</h2>
+   <p data-th="ดูแลทุกองค์ประกอบของพื้นที่ ตั้งแต่ผ้าม่านไปจนถึงงานตกแต่งภายใน"
+      data-en="Complete solutions for every detail of your space.">
+      ดูแลทุกองค์ประกอบของพื้นที่ ตั้งแต่ผ้าม่านไปจนถึงงานตกแต่งภายใน
+   </p>
+  </div>
+  <div class="services">
+   <article class="card">
+    <img src="assets/images/curtains.jpg" alt="Curtains">
+    <h3>Curtain & Blinds</h3>
+    <p>ผ้าม่าน ม่านโปร่ง ม่านม้วน และมู่ลี่</p>
+   </article>
+   <article class="card">
+    <img src="assets/images/wallpaper.jpg" alt="Wallpaper">
+    <h3>Wallpaper</h3>
+    <p>วอลเปเปอร์และงานตกแต่งผนัง</p>
+   </article>
+   <article class="card">
+    <img src="assets/images/interior.jpg" alt="Interior">
+    <h3>Interior Decoration</h3>
+    <p>ออกแบบและตกแต่งภายใน</p>
+   </article>
+  </div>
+ </div>
+</section>
+
+<section id="products">
+ <div class="container">
+  <div class="section-title">
+   <span>OUR COLLECTION</span>
+   <h2 data-th="สินค้าและวัสดุ" data-en="OUR PRODUCTS">สินค้าและวัสดุ</h2>
+   <p>Discover materials and finishes for your space.</p>
+  </div>
+  <div class="products">
+   <article class="card">
+    <img src="assets/images/product-curtain.jpg" alt="Curtain fabric">
+    <h3>Premium Curtains</h3><p>ผ้าม่านคุณภาพหลากหลายรูปแบบ</p>
+   </article>
+   <article class="card">
+    <img src="assets/images/product-blinds.jpg" alt="Blinds">
+    <h3>Blinds Collection</h3><p>ม่านม้วนและมู่ลี่</p>
+   </article>
+   <article class="card">
+    <img src="assets/images/product-wallpaper.jpg" alt="Wallpaper">
+    <h3>Wallpaper Collection</h3><p>วอลเปเปอร์หลากหลายลวดลาย</p>
+   </article>
+  </div>
+ </div>
+</section>
+
+<section class="bg" id="projects">
+ <div class="container">
+  <div class="section-title">
+   <span>SELECTED WORKS</span>
+   <h2 data-th="ผลงานของเรา" data-en="OUR PROJECTS">ผลงานของเรา</h2>
+   <p>Spaces designed with care and attention to detail.</p>
+  </div>
+  <div class="projects">
+   <article class="card">
+    <img src="assets/images/project-home.jpg" alt="Residential">
+    <h3>Residential Project</h3><p>บ้านพักอาศัย</p>
+   </article>
+   <article class="card">
+    <img src="assets/images/project-condo.jpg" alt="Condominium">
+    <h3>Condominium Project</h3><p>คอนโดมิเนียม</p>
+   </article>
+   <article class="card">
+    <img src="assets/images/project-commercial.jpg" alt="Commercial">
+    <h3>Commercial Project</h3><p>พื้นที่ธุรกิจ</p>
+   </article>
+  </div>
+ </div>
+</section>
+
+<section>
+ <div class="container">
+  <div class="section-title">
+   <span>WHY CHOOSE US</span>
+   <h2 data-th="ทำไมต้องเลือกเรา" data-en="WHY WORK WITH US">ทำไมต้องเลือกเรา</h2>
+  </div>
+  <div class="features">
+   <div class="feature"><div class="icon">◇</div><h3>Quality Materials</h3><p>คัดสรรวัสดุอย่างพิถีพิถัน</p></div>
+   <div class="feature"><div class="icon">⌂</div><h3>Personalized Design</h3><p>ออกแบบให้เหมาะกับคุณ</p></div>
+   <div class="feature"><div class="icon">✧</div><h3>Attention to Detail</h3><p>ใส่ใจในทุกรายละเอียด</p></div>
+   <div class="feature"><div class="icon">✓</div><h3>Complete Service</h3><p>บริการครบวงจร</p></div>
+  </div>
+ </div>
+</section>
+
+<section class="bg">
+ <div class="container">
+  <div class="section-title">
+   <span>OUR PROCESS</span>
+   <h2>How We Work</h2>
+   <p>ขั้นตอนการให้บริการของเรา</p>
+  </div>
+  <div class="process">
+   <div class="step"><span>01</span><h3>Consultation</h3><p>พูดคุยและรับฟังความต้องการ</p></div>
+   <div class="step"><span>02</span><h3>Site Survey</h3><p>สำรวจและวัดพื้นที่</p></div>
+   <div class="step"><span>03</span><h3>Design & Selection</h3><p>ออกแบบและเลือกวัสดุ</p></div>
+   <div class="step"><span>04</span><h3>Quotation</h3><p>เสนอราคาและรายละเอียดงาน</p></div>
+   <div class="step"><span>05</span><h3>Installation</h3><p>ดำเนินการผลิตและติดตั้ง</p></div>
+   <div class="step"><span>06</span><h3>Handover</h3><p>ตรวจสอบและส่งมอบงาน</p></div>
+  </div>
+ </div>
+</section>
+
+<div class="contact-banner">
+ <h2>LET'S CREATE YOUR DREAM SPACE.</h2>
+ <p>เริ่มต้นสร้างพื้นที่ในฝันของคุณไปพร้อมกับเรา</p>
+ <a href="#contact" class="btn">CONTACT US</a>
+</div>
+
+<section id="contact">
+ <div class="container contact-grid">
+  <div>
+   <div class="eyebrow">GET IN TOUCH</div>
+   <h2 data-th="พูดคุยกับเรา" data-en="LET'S TALK">พูดคุยกับเรา</h2>
+   <p>สนใจบริการหรือต้องการสอบถามรายละเอียดเพิ่มเติม ติดต่อเราได้ตามช่องทางด้านล่าง</p>
+   <br>
+   <p>Telephone: [Your Phone]</p>
+   <p>LINE: [Your LINE ID]</p>
+   <p>Email: [Your Email]</p>
+   <p>Location: [Your Address]</p>
+  </div>
+  <form id="contactForm">
+   <input required placeholder="ชื่อผู้ติดต่อ / Your Name">
+   <input required type="tel" placeholder="เบอร์โทรศัพท์ / Phone">
+   <select>
+    <option>เลือกบริการ / Select Service</option>
+    <option>ผ้าม่านและมู่ลี่ / Curtains & Blinds</option>
+    <option>วอลเปเปอร์ / Wallpaper</option>
+    <option>ตกแต่งภายใน / Interior Decoration</option>
+    <option>ตกแต่งครบวงจร / Complete Decoration</option>
+   </select>
+   <textarea placeholder="รายละเอียดเพิ่มเติม / Project Details"></textarea>
+   <button class="btn" type="submit">SEND MESSAGE</button>
+   <small id="formMessage"></small>
+  </form>
+ </div>
+</section>
+</main>
+
+<footer>
+ <div class="container">
+  <div class="footer-grid">
+   <div>
+    <div class="logo">YOUR BRAND</div>
+    <p>INTERIOR DESIGN & DECORATION</p>
+    <br>
+    <p>Creating beautiful spaces that reflect your lifestyle.</p>
+   </div>
+   <div>
+    <h3>QUICK LINKS</h3>
+    <a href="#about">About Us</a>
+    <a href="#services">Services</a>
+    <a href="#products">Products</a>
+    <a href="#projects">Projects</a>
+   </div>
+   <div>
+    <h3>CONTACT</h3>
+    <p>Telephone: [Your Phone]</p>
+    <p>LINE: [Your LINE ID]</p>
+    <p>Email: [Your Email]</p>
+   </div>
+  </div>
+  <div class="copyright">© 2026 YOUR BRAND. ALL RIGHTS RESERVED.</div>
+ </div>
+</footer>
+
+<script>
+const menu=document.getElementById('menu');
+const nav=document.getElementById('nav');
+menu.addEventListener('click',()=>nav.classList.toggle('open'));
+
+let currentLanguage='th';
+document.getElementById('language').addEventListener('click',function(){
+ currentLanguage=currentLanguage==='th'?'en':'th';
+ document.documentElement.lang=currentLanguage;
+ document.querySelectorAll('[data-th]').forEach(el=>{
+  el.innerHTML=el.dataset[currentLanguage];
+ });
+ this.textContent=currentLanguage==='th'?'EN':'TH';
+});
+
+document.querySelectorAll('nav a').forEach(link=>{
+ link.addEventListener('click',()=>nav.classList.remove('open'));
+});
+
+document.getElementById('contactForm').addEventListener('submit',function(e){
+ e.preventDefault();
+ document.getElementById('formMessage').textContent=
+ 'ตัวอย่างแบบฟอร์ม: กรุณาเชื่อมต่อระบบรับข้อความก่อนเปิดใช้งานจริง';
+});
+</script>
+</body>
+</html>
